@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    {% for question in questions %}
+        {% include 'questions/includes/question_card.html' %}
+    {% empty %}
+        <p class="alert alert-info">Вопросов пока нет.</p>
+    {% endfor %}
+
+    {% include 'core/includes/pagination.html' %}
+{% endblock %}

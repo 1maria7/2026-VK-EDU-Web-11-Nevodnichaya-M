@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}AskPupkin{% endblock %}
+
+{% block main_class %}container mt-2{% endblock %}
+
+{% block page_heading %}{% endblock %}
+
+{% block user_panel %}
+    {% include 'core/includes/auth_links.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="card mb-4 mt-3" style="width: 100%;">
+        <div class="card-body rounded border border-black">
+            <div class="d-flex">
+                <div class="col-2 me-3">
+                    <div
+                        style="height: 100px;"
+                        class="border rounded mb-2 w-100"
+                    >
+                        <img
+                            src="{% static question.author_avatar %}"
+                            alt="Аватар автора вопроса"
+                            class="img-fluid"
+                        >
+                    </div>
+                </div>
+
+                <div class="col-10 d-flex flex-column">
+                    <h2 class="card-title d-flex ms-2">
+                        {{ question.title }}
+                    </h2>
+
+                    <p class="card-text ms-2 mb-3">
+                        {{ question.text }}
+                    </p>
+
+                    <div class="card-link">
+                        <span class="text-decoration-underline">
+                            Tags:
+                        </span>
+
+                        {% for tag in question.tags %}
+                            <a
+                                href="{% url 'questions:tag' tag_name=tag %}"
+                                class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover"
+                            >
+                                {{ tag }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <h2 id="answers" class="fw-semibold text-base">
+            Answers
+        </h2>
+    </div>
+
+    {% for answer in answers %}
+        {% include 'questions/includes/answer_card.html' %}
+    {% empty %}
+        <p class="alert alert-info">No answers</p>
+    {% endfor %}
+    {% include 'core/includes/pagination.html' %}
+
+    <hr>
+
+    <div class="mb-3">
+    <label
+        for="exampleFormControlTextarea1"
+        class="form-label h4 text-decoration-underline fw-semibold text-base"
+    >
+        Add your answer:
+    </label>
+
+    <textarea
+        class="form-control mb-6"
+        id="exampleFormControlTextarea1"
+        name="text"
+        rows="6"
+        placeholder="Enter your text here"
+    ></textarea>
+</div>
+
+<div class="d-grid gap-2">
+    <button
+        class="btn btn-outline-primary"
+        type="button"
+    >
+        Send
+    </button>
+</div>
+{% endblock %}
+ 

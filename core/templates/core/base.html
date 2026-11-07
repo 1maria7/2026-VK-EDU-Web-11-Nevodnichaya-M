@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'core/img/favicon.png' %}">
+
+    <title>{% block title %}AskPupkin{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <header class="site-header">
+            <a href="{% url 'questions:index' %}" class="site-logo">
+                AskPupkin
+            </a>
+            <form class="header-search d-md-flex">
+                <input type="search" class="form-control" placeholder="Search" aria-label="Search">
+                <a href="{% url 'questions:ask' %}" class="btn btn-outline-primary ask-button">
+                    Ask
+                </a>
+            </form>
+            {% block user_panel %}
+            <nav class="auth-links" aria-label="Login" hidden>
+                <a href="{% url 'core:login' %}">Log in</a>
+                <a href="{% url 'core:signup' %}">Register</a>
+            </nav>
+
+            <div class="user-info">
+                <img
+                    class="user-avatar"
+                    src="{% static 'core/img/avatar.png' %}"
+                    alt="Avatar"
+                >
+
+                <div class="user-details">
+                    <span class="user-name">Dr. Pepper</span>
+
+                    <nav class="user-actions" aria-label="Actions">
+                        <a href="{% url 'core:profile' %}" class="link-primary link-underline-opacity-0">
+                            Settings
+                        </a>
+                        <a href="{% url 'core:login' %}" class="link-secondary link-underline-opacity-0">
+                            Log out
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            {% endblock %}
+        </header>
+
+        <!--Основная область и боковая панель-->
+
+        <main class="{% block main_class %}container{% endblock %}">
+            <div class="row">
+            {% block page_heading %}
+                <div class="d-flex align-items-center gap-2 mb-3 mt-4 text-base">
+                    {% block heading %}
+                        <h1>Name</h1>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            
+                
+            <section class="col-8 col-md-8">
+                {% block content %}{% endblock %}
+            </section> 
+            
+            
+            <aside class="col-4 col-md-4">
+                
+                <h3 class="fs-2 fw-semibold text-base">Popular tags</h3>
+                        <div class="font-monospace"style="margin-top: 20px; margin-bottom: 20px;">
+                            <h4 class="popular-tags" aria-label="Popular tags">
+                                <a
+                                    href="{% url 'questions:tag' tag_name='perl' %}"
+                                    class="link-danger link-underline-opacity-0"
+                                >perl</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='python' %}"
+                                    class="link-primary link-underline-opacity-0"
+                                >python</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='TechnoPark' %}"
+                                    class="link-dark link-underline-opacity-0"
+                                >TechnoPark</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='MySQL' %}"
+                                    class="link-success link-underline-opacity-0"
+                                >MySQL</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='django' %}"
+                                    class="link-warning link-underline-opacity-0"
+                                >django</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Mail.Ru' %}"
+                                    class="link-info link-underline-opacity-0"
+                                >Mail.Ru</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Voloshin' %}"
+                                    class="link-primary link-underline-opacity-0"
+                                >Voloshin</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Firefox' %}"
+                                    class="link-warning link-underline-opacity-0"
+                                >Firefox</a>
+                            </h4>
+                        </div>
+                <h3 class="text-base fs-2 fw-semibold">Best Members</h3>
+                <div class="list-group font-monospace ">
+                    <a href="{% url 'core:profile' %}">Mr. Freeman</a>
+                    <a href="{% url 'core:profile' %}">Dr. House</a>
+                    <a href="{% url 'core:profile' %}">Bender</a>
+                    <a href="{% url 'core:profile' %}">Queen Victoria</a>
+                    <a href="{% url 'core:profile' %}">V. Pupkin</a>
+                </div>
+                
+            </aside>
+            </div>
+        </main>
+        
+        
+        <footer class="site-footer"></footer>
+    </div>
+
+    <script src="{% static 'core/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

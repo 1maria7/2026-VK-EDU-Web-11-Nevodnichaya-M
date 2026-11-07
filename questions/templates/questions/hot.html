@@ -1,0 +1,11 @@
+{% extends 'questions/list.html' %}
+
+{% block title %}Hot Questions — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>Hot Questions</h1>
+
+    <a href="{% url 'questions:index' %}" class="ms-1">
+        New Questions
+    </a>
+{% endblock %}

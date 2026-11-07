@@ -1,0 +1,26 @@
+{% load static %}
+        <div class="card mb-4 mt-3" style="width: 100%;">
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="col-1 me-3">
+                    <div style="height: 65px;" class="border rounded mb-2 w-100">
+                        <img src="{% static answer.author_avatar %}" alt="img" class="img-fluid">
+                    </div>
+                    <div>
+                        <input type="number" class="form-control" value="{{ answer.rating }}">
+                    </div>
+                </div>
+        <div class="col-11 d-flex flex-column">
+            <div>
+            <p class="card-text">{{ answer.text }}</p>
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">
+                <div class="fw-semibold">Correct!</div>
+            </label>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>

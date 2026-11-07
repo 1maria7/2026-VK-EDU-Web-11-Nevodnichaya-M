@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}New question — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>New question</h1>
+{% endblock %}
+
+{% block content %}
+                    <div class="border border-2 border-dark p-3 rounded">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Tittle</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="How to build a moonpark?">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Text</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Enter your text here"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Tags</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="ex.: moon">
+                    </div>
+                    <div class="d-grid gap-2"> <button class="btn btn-outline-primary" type="submit">Ask</button></div>
+                    </div>
+{% endblock %}
