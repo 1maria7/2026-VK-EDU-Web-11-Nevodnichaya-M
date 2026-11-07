@@ -23,3 +23,12 @@ node_modules/
 # Build artifacts
 dist/
 build/
+# Virtual environments
+.venv/
+venv/
+# Django generated files
+/static/
+media/
+
+# Local environment variables
+.env

@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Settings — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>Settings:</h1>
+
+    <h2 class="text-decoration-underline">
+        Dr.Pepper
+    </h2>
+{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="col-12">
+                <form class="was-validated col-9">
+                    <div class="mb-3">
+                        <label class="form-label">Login</label>
+                        <input
+                                class="form-control"
+                                type="text"
+                                id="login"
+                                name="Login"
+                                placeholder="Dr.Pepper"
+                                required
+                        />
+                        <div class="invalid-feedback">Please enter new login or ignore this field</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                                class="form-control"
+                                type="email"
+                                id="email"
+                                name="Email"
+                                placeholder="dr.pepper@example.com"
+                                required
+                        />
+                        <div class="invalid-feedback">Please enter new email or ignore this field</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">NickName</label>
+                        <input
+                                class="form-control"
+                                type="text"
+                                id="nickName"
+                                name="NickName"
+                                placeholder="Pepper"
+                                required
+                        />
+                        <div class="invalid-feedback">Please enter new NickName or ignore this field</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Upload avatar</label>
+                        <input
+                                type="file"
+                                class="form-control"
+                                aria-label="file example"
+                                placeholder="avatar.jpg"
+                                required
+                        />
+                        <div class="invalid-feedback">Please choose a file or ignore this field</div>
+                    </div>
+    
+                    <button type="submit" class="btn btn btn-outline-primary w-100">Edit</button>
+                </form>
+            </div>
+        </div>
+{% endblock %}
