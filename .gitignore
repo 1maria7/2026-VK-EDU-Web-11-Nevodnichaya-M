@@ -23,3 +23,11 @@ node_modules/
 # Build artifacts
 dist/
 build/
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+.env.*
+!.env.example

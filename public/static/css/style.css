@@ -7,7 +7,9 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
+.page-wrapper main {
+    flex: 1;
+}
 .text-base{
     font-optical-sizing: auto;
     font-weight: 500;
@@ -111,4 +113,24 @@ body {
     .user-info {
         margin-left: auto;
     }
+}
+
+.vote-widget {
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.vote-widget .vote-button {
+    width: 32px;
+    height: 28px;
+    padding: 0;
+    font-weight: bold;
+}
+
+.vote-count {
+    font-weight: 600;
+}
+
+.popular-tags {
+    font-size: 1.5rem;
 }
