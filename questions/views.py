@@ -13,6 +13,7 @@ for number in range(1, 36):
             ),
             "rating": number % 10,
             "answers_count": 4,
+            "created_at": "17.10.2026",
             "tags": ["black-jack", "bender"],
             "author_avatar": "core/img/avatar.png"
         }
@@ -103,6 +104,8 @@ def question(request, question_id):
                     "and check the documentation."
                 ),
                 "rating": 5,
+                "created_at": "17.10.2026",
+                "is_correct": number == 1,
                 "author_avatar": "core/img/avatar.png",
             }
         )

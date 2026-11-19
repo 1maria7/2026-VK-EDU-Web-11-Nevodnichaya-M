@@ -1,7 +1,30 @@
 {% extends 'core/base.html' %}
-
+{% load static %}
 {% block title %}Settings — AskPupkin{% endblock %}
+{% block user_panel %}
+    <div class="user-info">
+        <img
+            class="user-avatar"
+            src="{% static 'core/img/avatar.png' %}"
+            alt="Avatar"
+        >
 
+        <div class="user-details">
+            <span class="user-name">Dr. Pepper</span>
+
+            <nav class="user-actions" aria-label="User actions">
+                <a href="{% url 'core:profile' %}"
+                   class="link-primary link-underline-opacity-0">
+                    Settings
+                </a>
+                <a href="{% url 'core:login' %}"
+                   class="link-secondary link-underline-opacity-0">
+                    Log out
+                </a>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
 {% block heading %}
     <h1>Settings:</h1>
 
@@ -11,59 +34,100 @@
 {% endblock %}
 
 {% block content %}
-        <div class="row">
-            <div class="col-12">
-                <form class="was-validated col-9">
-                    <div class="mb-3">
-                        <label class="form-label">Login</label>
-                        <input
-                                class="form-control"
-                                type="text"
-                                id="login"
-                                name="Login"
-                                placeholder="Dr.Pepper"
-                                required
-                        />
-                        <div class="invalid-feedback">Please enter new login or ignore this field</div>
+    <div class="row">
+        <div class="col-12">
+            <form class="was-validated col-12"
+                  method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="login" class="form-label">Login</label>
+                    <input
+                        class="form-control"
+                        type="text"
+                        id="login"
+                        name="Login"
+                        value="Dr.Pepper"
+                        minlength="3"
+                        maxlength="30"
+                    />
+                    <div class="form-text">
+                        Leave empty to keep your current login.
+                        Maximum 30 characters.
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input
-                                class="form-control"
-                                type="email"
-                                id="email"
-                                name="Email"
-                                placeholder="dr.pepper@example.com"
-                                required
-                        />
-                        <div class="invalid-feedback">Please enter new email or ignore this field</div>
+                    <div class="invalid-feedback">
+                        Login must contain between 3 and 30 characters.
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">NickName</label>
-                        <input
-                                class="form-control"
-                                type="text"
-                                id="nickName"
-                                name="NickName"
-                                placeholder="Pepper"
-                                required
-                        />
-                        <div class="invalid-feedback">Please enter new NickName or ignore this field</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                        class="form-control"
+                        type="email"
+                        id="email"
+                        name="Email"
+                        value="dr.pepper@example.com"
+                        maxlength="254"
+                    />
+                    <div class="form-text">
+                        Leave empty to keep your current email.
+                        Maximum 254 characters.
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Upload avatar</label>
-                        <input
-                                type="file"
-                                class="form-control"
-                                aria-label="file example"
-                                placeholder="avatar.jpg"
-                                required
-                        />
-                        <div class="invalid-feedback">Please choose a file or ignore this field</div>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
                     </div>
-    
-                    <button type="submit" class="btn btn btn-outline-primary w-100">Edit</button>
-                </form>
-            </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nickName" class="form-label">NickName</label>
+                    <input
+                        class="form-control"
+                        type="text"
+                        id="nickName"
+                        name="NickName"
+                        value="Pepper"
+                        minlength="2"
+                        maxlength="30"
+                    />
+                    <div class="form-text">
+                        Leave empty to keep your current nickname.
+                        Maximum 30 characters.
+                    </div>
+                    <div class="invalid-feedback">
+                        NickName must contain between 2 and 30 characters.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <img
+                        src="{% static 'core/img/avatar.png' %}"
+                        alt="Current avatar"
+                        class="img-thumbnail mb-2"
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                    >
+
+                    <label for="avatar" class="form-label">
+                        Upload avatar
+                    </label>
+                    <input
+                        type="file"
+                        class="form-control"
+                        id="avatar"
+                        name="avatar"
+                    />
+
+                    <div class="invalid-feedback">
+                        Please choose a file or ignore this field
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-outline-primary w-100">
+                    Edit
+                </button>
+            </form>
         </div>
+    </div>
 {% endblock %}

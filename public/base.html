@@ -1,6 +1,7 @@
 
+
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,36 +22,29 @@
             <a href="index.html" class="site-logo">
                 AskPupkin
             </a>
-            <form class="header-search d-md-flex">
-                <input type="search" class="form-control" placeholder="Search" aria-label="Search">
-                <button href="ask.html" class="btn btn-outline-primary ask-button" type="submit">Ask</button>
+
+            <form class="header-search" action="index.html" method="get">
+                <input
+                    type="search"
+                    name="q"
+                    class="form-control"
+                    placeholder="Search"
+                    aria-label="Search"
+                >
+                <button class="btn btn-outline-primary" type="submit">
+                    Search
+                </button>
             </form>
 
-            <nav class="auth-links" aria-label="Login" hidden>
+            <a href="ask.html" class="btn btn-outline-primary ask-button">
+                Ask
+            </a>
+
+            <nav class="auth-links" aria-label="Login">
                 <a href="login.html">Log in</a>
                 <a href="signup.html">Register</a>
             </nav>
 
-            <div class="user-info">
-                <img
-                    class="user-avatar"
-                    src="static/img/avatar.png"
-                    alt="Avatar"
-                >
-
-                <div class="user-details">
-                    <span class="user-name">Dr. Pepper</span>
-
-                    <nav class="user-actions" aria-label="Actions">
-                        <a href="profile.html" class="link-primary link-underline-opacity-0">
-                            Settings
-                        </a>
-                        <a href="login.html" class="link-secondary link-underline-opacity-0">
-                            Log out
-                        </a>
-                    </nav>
-                </div>
-            </div>
 
         </header>
 
@@ -61,29 +55,28 @@
             <div class="d-flex align-items-center gap-2 mb-3 mt-4 text-base">
                 <h1>Name</h1>
             </div>
-            
-                
-            <section class="col-8 col-md-8">
-                
-            </section> 
-            
-            
-            <aside class="col-4 col-md-4">
-                
-                <h3 class="fs-2 fw-semibold text-base">Popular tags</h3>
+
+
+            <section class="col-12 col-md-8">
+
+            </section>
+
+            <aside class="col-12 col-md-4">
+
+                <h2 class="fs-2 fw-semibold text-base">Popular tags</h2>
                         <div class="font-monospace"style="margin-top: 20px; margin-bottom: 20px;">
-                            <h4 class="popular-tags" aria-label="Popular tags">
-                                <a href="index.html" class="link-danger link-underline-opacity-0">perl</a>
-                                <a href="index.html" class="link-primary link-underline-opacity-0">python</a>
-                                <a href="index.html" class="link-dark link-underline-opacity-0">TechnoPark</a>
-                                <a href="index.html" class="link-success link-underline-opacity-0">MySQL</a>
-                                <a href="index.html" class="link-warning link-underline-opacity-0">django</a>
-                                <a href="index.html" class="link-info link-underline-opacity-0">Mail.Ru</a>
-                                <a href="index.html" class="link-primary link-underline-opacity-0">Voloshin</a>
-                                <a href="index.html" class="link-warning link-underline-opacity-0">Firefox</a>
-                            </h4>
+                            <div class="popular-tags" aria-label="Popular tags">
+                                <a href="tag.html" class="link-danger link-underline-opacity-0">perl</a>
+                                <a href="tag.html" class="link-primary link-underline-opacity-0">python</a>
+                                <a href="tag.html" class="link-dark link-underline-opacity-0">TechnoPark</a>
+                                <a href="tag.html" class="link-success link-underline-opacity-0">MySQL</a>
+                                <a href="tag.html" class="link-secondary link-underline-opacity-0">django</a>
+                                <a href="tag.html" class="link-underline-opacity-0" style="color: #6f42c1; text-decoration: none;">Mail.Ru</a>
+                                <a href="tag.html" class="link-underline-opacity-0" style="color: #fd7e14; text-decoration: none;">Voloshin</a>
+                                <a href="tag.html" class="link-danger link-underline-opacity-0">Firefox</a>
+                            </div>
                         </div>
-                <h3 class="text-base fs-2 fw-semibold">Best Members</h3>
+                <h2 class="text-base fs-2 fw-semibold">Best Members</h2>
                 <div class="list-group font-monospace ">
                     <a href="profile.html">Mr. Freeman</a>
                     <a href="profile.html">Dr. House</a>
@@ -91,12 +84,12 @@
                     <a href="profile.html">Queen Victoria</a>
                     <a href="profile.html">V. Pupkin</a>
                 </div>
-                
+
             </aside>
             </div>
         </main>
-        </div> 
-        
+
+
         <footer class="site-footer"></footer>
     </div>
 
