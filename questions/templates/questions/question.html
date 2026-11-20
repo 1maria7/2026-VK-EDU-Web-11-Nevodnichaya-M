@@ -1,0 +1,193 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}AskPupkin{% endblock %}
+
+{% block main_class %}container mt-2{% endblock %}
+
+{% block page_heading %}{% endblock %}
+
+
+{% block content %}
+    <div class="card mb-4 mt-3" style="width: 100%;">
+        <div class="card-body rounded border border-black">
+            <div class="d-flex gap-3 align-items-start">
+                <div class="flex-shrink-0" style="width: 72px;">
+                    <div style="height: 100px;"
+                         class="border rounded mb-2 w-100">
+                        {% if question.author.profile.avatar %}
+                            <img
+                                src="{{ question.author.profile.avatar.url }}"
+                                alt="Avatar"
+                                class="img-fluid"
+                            >
+                        {% else %}
+                            <img
+                                src="{% static 'core/img/avatar.png' %}"
+                                alt="Avatar"
+                                class="img-fluid"
+                            >
+                        {% endif %}
+                    </div>
+
+                    <div class="vote-widget d-flex flex-column align-items-center gap-1"
+                         data-vote-widget
+                         data-count="{{ question.rating }}"
+                        data-vote-url="{% url 'questions:vote_question' question_id=question.id %}"
+                        {% if not request.user.is_authenticated %}
+                            title="Log in to vote"
+                        {% elif question.user_vote %}
+                            title="You have already voted"
+                        {% endif %}>
+
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success vote-button"
+                            data-vote="up"
+                            aria-label="Like"
+                            aria-pressed="{% if question.user_vote == 1 %}true{% else %}false{% endif %}"
+                            {% if not request.user.is_authenticated or question.user_vote %}
+                                disabled
+                            {% endif %}
+                        >▲</button>
+
+                        <span class="vote-count" aria-live="polite">
+                            {{ question.rating }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-danger vote-button"
+                            data-vote="down"
+                            aria-label="Dislike"
+                            aria-pressed="{% if question.user_vote == -1 %}true{% else %}false{% endif %}"
+                            {% if not request.user.is_authenticated or question.user_vote %}
+                                disabled
+                            {% endif %}
+                        >▼</button>
+                    </div>
+                </div>
+
+                <div class="flex-grow-1 d-flex flex-column"
+                     style="min-width: 0;">
+                    <h2 class="card-title d-flex ms-2">
+                        {{ question.title }}
+                    </h2>
+
+                    <p class="text-muted small ms-2 mb-2">
+                        Created: {{ question.created_at }} ·
+                        <a href="#answers">
+                            Answers: {{ question.answers_count }}
+                        </a>
+                    </p>
+
+                    <p class="card-text ms-2 mb-3">
+                        {{ question.text }}
+                    </p>
+
+                    <div class="card-link">
+                        <span class="text-decoration-underline">
+                            Tags:
+                        </span>
+
+
+                        {% for tag in question.tags.all %}
+                            <a
+                                href="{% url 'questions:tag' tag_name=tag.name %}"
+                                class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover"
+                            >
+                                {{ tag.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2 id="answers" class="fw-semibold text-base">
+        Answers
+    </h2>
+
+
+    {% for answer in answers %}
+        <div id="answer-{{ answer.id }}">
+            {% include 'questions/includes/answer_card.html' %}
+        </div>
+    {% empty %}
+        <p class="alert alert-info">No answers</p>
+    {% endfor %}
+
+
+    {% include 'core/includes/pagination.html' %}
+
+    <hr>
+
+    <form action="{% url 'questions:question' question_id=question.id %}"
+        method="post">
+        {% csrf_token %}
+        {% if answer_form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in answer_form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label
+                for="answerText"
+                class="form-label h4 text-decoration-underline fw-semibold text-base"
+            >
+                Add your answer:
+            </label>
+
+            <textarea
+                class="form-control mb-3 {% if answer_form.text.errors %}is-invalid{% endif %}"
+                id="answerText"
+                name="text"
+                rows="6"
+                maxlength="5000"
+                placeholder="Enter your text here"
+                {% if not request.user.is_authenticated %}
+                    disabled
+                    title="Log in to write an answer"
+                {% endif %}
+                required
+            >{{ answer_form.text.value|default_if_none:'' }}</textarea>
+
+            {% for error in answer_form.text.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+            {% if not request.user.is_authenticated %}
+                <div class="form-text">
+                    <a href="{% url 'core:login' %}?next={{ request.path|urlencode }}">
+                        Log in
+                    </a>
+                    to write an answer.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="d-grid gap-2"
+            {% if not request.user.is_authenticated %}
+                title="Log in to send an answer"
+            {% endif %}>
+            <button
+                class="btn btn-outline-primary"
+                type="submit"
+                {% if not request.user.is_authenticated %}
+                    disabled
+                    title="Log in to send an answer"
+                {% endif %}
+            >
+                Send
+            </button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'questions/list.html' %}
+
+{% block title %}Tag: {{ tag_name }} — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>Tag:</h1>
+
+    <h2 class="text-decoration-underline">
+        {{ tag_name }}
+    </h2>
+
+    <a href="{% url 'questions:index' %}" class="ms-1">
+        New Questions
+    </a>
+{% endblock %}

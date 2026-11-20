@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'core/img/favicon.png' %}">
+
+    <title>{% block title %}AskPupkin{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <header class="site-header">
+            <a href="{% url 'questions:index' %}" class="site-logo">
+                AskPupkin
+            </a>
+            <form class="header-search" action="{% url 'questions:index' %}" method="get">
+                <input type="search" name="q" class="form-control"
+                       placeholder="Search" aria-label="Search"
+                       value="{{ request.GET.q|default:'' }}">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'questions:ask' %}"
+                class="btn btn-outline-primary ask-button">
+                    Ask
+                </a>
+            {% else %}
+                <span
+                    class="btn btn-outline-primary ask-button"
+                    role="button"
+                    aria-disabled="true"
+                    title="Log in to ask a question"
+                    style="opacity: 0.65; cursor: not-allowed;"
+                >
+                    Ask
+                </span>
+            {% endif %}
+            {% block user_panel %}
+                {% include 'core/includes/auth_links.html' %}
+            {% endblock %}
+        </header>
+        <main class="{% block main_class %}container{% endblock %}">
+            <div class="row">
+            {% block page_heading %}
+                <div class="d-flex align-items-center gap-2 mb-3 mt-4 text-base">
+                    {% block heading %}
+                        <h1>Name</h1>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+
+            <section class="col-12 col-md-8">
+                {% block content %}{% endblock %}
+            </section>
+
+
+            <aside class="col-12 col-md-4">
+
+                <h2 class="fs-2 fw-semibold text-base">Popular tags</h2>
+                        <div class="font-monospace" style="margin-top: 20px; margin-bottom: 20px;">
+                            <div class="popular-tags" aria-label="Popular tags">
+                                <a
+                                    href="{% url 'questions:tag' tag_name='perl' %}"
+                                    class="link-danger link-underline-opacity-0"
+                                >perl</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='python' %}"
+                                    class="link-primary link-underline-opacity-0"
+                                >python</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='TechnoPark' %}"
+                                    class="link-dark link-underline-opacity-0"
+                                >TechnoPark</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='MySQL' %}"
+                                    class="link-success link-underline-opacity-0"
+                                >MySQL</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='django' %}"
+                                    class="link-secondary link-underline-opacity-0"
+                                >django</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Mail.Ru' %}"
+                                    class="link-underline-opacity-0" style="color: #6f42c1; text-decoration: none;"
+                                >Mail.Ru</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Voloshin' %}"
+                                    class="link-underline-opacity-0" style="color: #fd7e14; text-decoration: none;"
+                                >Voloshin</a>
+
+                                <a
+                                    href="{% url 'questions:tag' tag_name='Firefox' %}"
+                                    class="link-danger link-underline-opacity-0"
+                                >Firefox</a>
+                            </div>
+                        </div>
+                <h2 class="text-base fs-2 fw-semibold">Best Members</h2>
+                <div class="list-group font-monospace ">
+                    <a href="{% url 'core:profile' %}">Mr. Freeman</a>
+                    <a href="{% url 'core:profile' %}">Dr. House</a>
+                    <a href="{% url 'core:profile' %}">Bender</a>
+                    <a href="{% url 'core:profile' %}">Queen Victoria</a>
+                    <a href="{% url 'core:profile' %}">V. Pupkin</a>
+                </div>
+
+            </aside>
+            </div>
+        </main>
+
+
+        <footer class="site-footer"></footer>
+    </div>
+
+    <script src="{% static 'core/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/js/vote.js' %}"></script>
+    <script src="{% static 'core/js/correct.js' %}" defer></script>
+</body>
+</html>

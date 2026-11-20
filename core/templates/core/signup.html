@@ -1,0 +1,152 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Register — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>Register</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <form class="col-12" method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="login" class="form-label">
+                        Login
+                    </label>
+                    <input
+                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                        type="text"
+                        id="login"
+                        name="username"
+                        value="{{ form.username.value|default_if_none:'' }}"
+                        placeholder="Dr.Pepper"
+                        maxlength="150"
+                        autocomplete="username"
+                        required
+                    >
+                    <div class="form-text">
+                        Choose a unique username.
+                    </div>
+                    {% for error in form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        Email
+                    </label>
+                    <input
+                        class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ form.email.value|default_if_none:'' }}"
+                        placeholder="dr.pepper@example.com"
+                        maxlength="254"
+                        autocomplete="email"
+                        required
+                    >
+                    <div class="form-text">
+                        Enter a valid email address.
+                    </div>
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="nickName" class="form-label">
+                        NickName
+                    </label>
+                    <input
+                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                        type="text"
+                        id="nickName"
+                        name="first_name"
+                        value="{{ form.first_name.value|default_if_none:'' }}"
+                        placeholder="Pepper"
+                        maxlength="150"
+                        required
+                    >
+                    <div class="form-text">
+                        Enter your display name.
+                    </div>
+                    {% for error in form.first_name.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+                    <input
+                        class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                        type="password"
+                        id="password"
+                        name="password1"
+                        placeholder="*******"
+                        autocomplete="new-password"
+                        required
+                    >
+                    <div class="form-text">
+                        Choose a secure password.
+                    </div>
+                    {% for error in form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="repeatPassword" class="form-label">
+                        Repeat password
+                    </label>
+                    <input
+                        class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                        type="password"
+                        id="repeatPassword"
+                        name="password2"
+                        placeholder="*******"
+                        autocomplete="new-password"
+                        required
+                    >
+                    <div class="form-text">
+                        Repeat the password you entered above.
+                    </div>
+                    {% for error in form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-outline-primary w-100"
+                >
+                    Register!
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

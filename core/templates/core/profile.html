@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Settings — AskPupkin{% endblock %}
+{% block heading %}
+    <h1>Settings:</h1>
+
+    <h2 class="text-decoration-underline">
+        {{ request.user.username }}
+    </h2>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <form class="col-12"
+                  method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="login" class="form-label">
+                        Login
+                    </label>
+                    <input
+                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                        type="text"
+                        id="login"
+                        name="username"
+                        value="{{ form.username.value|default_if_none:'' }}"
+                        maxlength="150"
+                        required
+                    >
+                    <div class="form-text">
+                        Choose a unique login.
+                    </div>
+                    {% for error in form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        Email
+                    </label>
+                    <input
+                        class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ form.email.value|default_if_none:'' }}"
+                        maxlength="254"
+                        required
+                    >
+                    <div class="form-text">
+                        Enter a valid email address.
+                    </div>
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="nickName" class="form-label">
+                        NickName
+                    </label>
+                    <input
+                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                        type="text"
+                        id="nickName"
+                        name="first_name"
+                        value="{{ form.first_name.value|default_if_none:'' }}"
+                        maxlength="150"
+                        required
+                    >
+                    <div class="form-text">
+                        Enter your display name.
+                    </div>
+                    {% for error in form.first_name.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {% if request.user.profile.avatar %}
+                        <img
+                            src="{{ request.user.profile.avatar.url }}"
+                            alt="Current avatar"
+                            class="img-thumbnail mb-2"
+                            style="width: 120px; height: 120px; object-fit: cover;"
+                        >
+                    {% else %}
+                        <img
+                            src="{% static 'core/img/avatar.png' %}"
+                            alt="Current avatar"
+                            class="img-thumbnail mb-2"
+                            style="width: 120px; height: 120px; object-fit: cover;"
+                        >
+                    {% endif %}
+
+                    <label for="avatar" class="form-label">
+                        Upload avatar
+                    </label>
+                    <input
+                        type="file"
+                        class="form-control {% if form.avatar.errors %}is-invalid{% endif %}"
+                        id="avatar"
+                        name="avatar"
+                        accept="image/jpeg,image/png"
+                    >
+                    <div class="form-text">
+                        Allowed formats: JPG and PNG.
+                        Maximum file size: 5 MB.
+                    </div>
+                    {% for error in form.avatar.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit"
+                        class="btn btn-outline-primary w-100">
+                    Edit
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

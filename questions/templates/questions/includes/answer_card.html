@@ -1,0 +1,101 @@
+{% load static %}
+        <div class="card mb-4 mt-3" style="width: 100%;">
+        <div class="card-body">
+            <div class="d-flex gap-3 align-items-start">
+            <div class="flex-shrink-0" style="width: 72px;">
+                <div style="height: 65px;" class="border rounded mb-2 w-100">
+                    {% if answer.author.profile.avatar %}
+                        <img
+                            src="{{ answer.author.profile.avatar.url }}"
+                            alt="Avatar"
+                            class="img-fluid"
+                        >
+                    {% else %}
+                        <img
+                            src="{% static 'core/img/avatar.png' %}"
+                            alt="Avatar"
+                            class="img-fluid"
+                        >
+                    {% endif %}
+                </div>
+
+                <div class="vote-widget d-flex flex-column align-items-center gap-1"
+                    data-vote-widget
+                    data-count="{{ answer.rating }}"
+                    data-vote-url="{% url 'questions:vote_answer' answer_id=answer.id %}"
+                    {% if not request.user.is_authenticated %}
+                        title="Log in to vote"
+                    {% elif answer.user_vote %}
+                        title="You have already voted"
+                    {% endif %}>
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-success vote-button"
+                        data-vote="up"
+                        aria-label="Like"
+                        aria-pressed="{% if answer.user_vote == 1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or answer.user_vote %}
+                            disabled
+                        {% endif %}
+                    >▲</button>
+
+                    <span class="vote-count" aria-live="polite">
+                        {{ answer.rating }}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger vote-button"
+                        data-vote="down"
+                        aria-label="Dislike"
+                        aria-pressed="{% if answer.user_vote == -1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or answer.user_vote %}
+                            disabled
+                        {% endif %}
+                    >▼</button>
+                </div>
+            </div>
+
+            <div class="flex-grow-1 d-flex flex-column" style="min-width: 0;">
+                <p class="card-text">{{ answer.text }}</p>
+
+                <p class="text-muted small mb-2">
+                    Created: {{ answer.created_at }}
+                </p>
+            {% if request.user.is_authenticated and request.user.id == question.author_id %}
+                <div
+                    class="form-check"
+                    data-correct-widget
+                    data-question-id="{{ answer.question_id }}"
+                    data-correct-url="{% url 'questions:set_correct_answer' answer_id=answer.id %}"
+                >
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="correctAnswer{{ answer.id }}"
+                        data-correct-checkbox
+                        {% if answer.is_correct %}checked{% endif %}
+                    >
+                    <label
+                        class="form-check-label"
+                        for="correctAnswer{{ answer.id }}"
+                    >
+                        <span class="fw-semibold">Correct!</span>
+                    </label>
+                    <div
+                        class="small text-danger"
+                        data-correct-error
+                        role="alert"
+                        hidden
+                    ></div>
+                </div>
+            {% elif answer.is_correct %}
+                <div class="fw-semibold text-success">
+                    Correct!
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
