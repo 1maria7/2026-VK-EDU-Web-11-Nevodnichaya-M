@@ -1,0 +1,33 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Databases
+*.sqlite3
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+.env.*
+!.env.example
