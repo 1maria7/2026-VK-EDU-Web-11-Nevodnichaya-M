@@ -1,6 +1,6 @@
 {% if page_obj.paginator.num_pages > 1 %}
 <nav aria-label="Постраничная навигация">
-    <ul class="pagination">
+    <ul class="pagination flex-wrap">
 
         {% if page_obj.has_previous %}
             <li class="page-item">
@@ -20,8 +20,14 @@
             </li>
         {% endif %}
 
-        {% for number in page_obj.paginator.page_range %}
-            {% if number == page_obj.number %}
+        {% for number in page_obj.elided_page_range %}
+            {% if number == page_obj.paginator.ELLIPSIS %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">
+                        {{ number }}
+                    </span>
+                </li>
+            {% elif number == page_obj.number %}
                 <li class="page-item active" aria-current="page">
                     <span class="page-link">{{ number }}</span>
                 </li>

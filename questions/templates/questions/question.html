@@ -15,11 +15,19 @@
                 <div class="flex-shrink-0" style="width: 72px;">
                     <div style="height: 100px;"
                          class="border rounded mb-2 w-100">
-                        <img
-                            src="{% static question.author_avatar %}"
-                            alt="Avatar"
-                            class="img-fluid"
-                        >
+                        {% if question.author.profile.avatar %}
+                            <img
+                                src="{{ question.author.profile.avatar.url }}"
+                                alt="Avatar"
+                                class="img-fluid"
+                            >
+                        {% else %}
+                            <img
+                                src="{% static 'core/img/avatar.png' %}"
+                                alt="Avatar"
+                                class="img-fluid"
+                            >
+                        {% endif %}
                     </div>
 
                     <div class="vote-widget d-flex flex-column align-items-center gap-1"
@@ -69,12 +77,13 @@
                             Tags:
                         </span>
 
-                        {% for tag in question.tags %}
+
+                        {% for tag in question.tags.all %}
                             <a
-                                href="{% url 'questions:tag' tag_name=tag %}"
+                                href="{% url 'questions:tag' tag_name=tag.name %}"
                                 class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover"
                             >
-                                {{ tag }}
+                                {{ tag.name }}
                             </a>
                         {% endfor %}
                     </div>

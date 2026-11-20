@@ -5,6 +5,8 @@ venv
 **/*.pyc
 **/*.sqlite3
 .env
+.env.local
+.env.docker
 /static/
 /media/
 .idea

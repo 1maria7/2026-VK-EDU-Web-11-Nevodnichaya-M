@@ -1,125 +1,55 @@
-from django.http import Http404
-from django.shortcuts import render
+
+from django.shortcuts import get_object_or_404, render
+
 from core.pagination import paginate
-QUESTIONS = []
-for number in range(1, 36):
-    QUESTIONS.append(
-        {
-            "id": number,
-            "title": f"How to build a moon park? #{number}",
-            "text": (
-                "Guys, I have a problem with a moon park. "
-                "Cannot find black-jack..."
-            ),
-            "rating": number % 10,
-            "answers_count": 4,
-            "created_at": "17.10.2026",
-            "tags": ["black-jack", "bender"],
-            "author_avatar": "core/img/avatar.png"
-        }
-    )
+from .models import Answer, Question, Tag
+
+
 def index(request):
-    questions = sorted(
-        QUESTIONS,
-        key=lambda question: question["id"],
-        reverse=True,
-    )
+    page_obj = paginate(Question.objects.newest(), request)
 
-    page_obj = paginate(questions, request)
-
-    return render(
-        request,
-        "questions/index.html",
-        {
-            "questions": page_obj.object_list,
-            "page_obj": page_obj,
-        },
-    )
+    return render(request, "questions/index.html", {
+        "questions": page_obj.object_list,
+        "page_obj": page_obj,
+    })
 
 
 def hot(request):
-    questions = sorted(
-        QUESTIONS,
-        key=lambda question: (
-            question["rating"],
-            question["id"],
-        ),
-        reverse=True,
-    )
+    page_obj = paginate(Question.objects.hot(), request)
 
-    page_obj = paginate(questions, request)
+    return render(request, "questions/hot.html", {
+        "questions": page_obj.object_list,
+        "page_obj": page_obj,
+    })
 
-    return render(
-        request,
-        "questions/hot.html",
-        {
-            "questions": page_obj.object_list,
-            "page_obj": page_obj,
-        },
-    )
+
 def tag(request, tag_name):
-    questions = []
-
-    for question in QUESTIONS:
-        if tag_name in question["tags"]:
-            questions.append(question)
-
-    questions = sorted(
-        questions,
-        key=lambda question: question["id"],
-        reverse=True,
+    tag_obj = get_object_or_404(Tag, name=tag_name)
+    page_obj = paginate(
+        Question.objects.by_tag(tag_obj.name), request
     )
 
-    page_obj = paginate(questions, request)
+    return render(request, "questions/tag.html", {
+        "questions": page_obj.object_list,
+        "page_obj": page_obj,
+        "tag_name": tag_obj.name,
+    })
 
-    return render(
-        request,
-        "questions/tag.html",
-        {
-            "questions": page_obj.object_list,
-            "page_obj": page_obj,
-            "tag_name": tag_name,
-        },
-    )
+
 def question(request, question_id):
-    question_data = None
-
-    for item in QUESTIONS:
-        if item["id"] == question_id:
-            question_data = item
-            break
-
-    if question_data is None:
-        raise Http404("Вопрос не найден")
-
-    answers = []
-
-    for number in range(1, question_data["answers_count"] + 1):
-        answers.append(
-            {
-                "id": number,
-                "text": (
-                    f"Answer #{number} to question #{question_id}. "
-                    "Start with a small working example "
-                    "and check the documentation."
-                ),
-                "rating": 5,
-                "created_at": "17.10.2026",
-                "is_correct": number == 1,
-                "author_avatar": "core/img/avatar.png",
-            }
-        )
-
-    page_obj = paginate(answers, request, per_page=3)
-
-    return render(
+    question_obj = get_object_or_404(Question, pk=question_id)
+    page_obj = paginate(
+        Answer.objects.for_question(question_obj),
         request,
-        "questions/question.html",
-        {
-            "question": question_data,
-            "answers": page_obj.object_list,
-            "page_obj": page_obj,
-        },
+        per_page=3,
     )
+
+    return render(request, "questions/question.html", {
+        "question": question_obj,
+        "answers": page_obj.object_list,
+        "page_obj": page_obj,
+    })
+
+
 def ask(request):
     return render(request, "questions/ask.html")
