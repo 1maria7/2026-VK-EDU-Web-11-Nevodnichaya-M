@@ -32,13 +32,23 @@
 
                     <div class="vote-widget d-flex flex-column align-items-center gap-1"
                          data-vote-widget
-                         data-count="{{ question.rating }}">
+                         data-count="{{ question.rating }}"
+                        data-vote-url="{% url 'questions:vote_question' question_id=question.id %}"
+                        {% if not request.user.is_authenticated %}
+                            title="Log in to vote"
+                        {% elif question.user_vote %}
+                            title="You have already voted"
+                        {% endif %}>
+
                         <button
                             type="button"
                             class="btn btn-sm btn-outline-success vote-button"
                             data-vote="up"
                             aria-label="Like"
-                            aria-pressed="false"
+                            aria-pressed="{% if question.user_vote == 1 %}true{% else %}false{% endif %}"
+                            {% if not request.user.is_authenticated or question.user_vote %}
+                                disabled
+                            {% endif %}
                         >▲</button>
 
                         <span class="vote-count" aria-live="polite">
@@ -50,7 +60,10 @@
                             class="btn btn-sm btn-outline-danger vote-button"
                             data-vote="down"
                             aria-label="Dislike"
-                            aria-pressed="false"
+                            aria-pressed="{% if question.user_vote == -1 %}true{% else %}false{% endif %}"
+                            {% if not request.user.is_authenticated or question.user_vote %}
+                                disabled
+                            {% endif %}
                         >▼</button>
                     </div>
                 </div>
@@ -98,19 +111,30 @@
         Answers
     </h2>
 
+
     {% for answer in answers %}
-        {% include 'questions/includes/answer_card.html' %}
+        <div id="answer-{{ answer.id }}">
+            {% include 'questions/includes/answer_card.html' %}
+        </div>
     {% empty %}
         <p class="alert alert-info">No answers</p>
     {% endfor %}
+
 
     {% include 'core/includes/pagination.html' %}
 
     <hr>
 
     <form action="{% url 'questions:question' question_id=question.id %}"
-          method="post">
+        method="post">
         {% csrf_token %}
+        {% if answer_form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in answer_form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="mb-3">
             <label
@@ -121,17 +145,47 @@
             </label>
 
             <textarea
-                class="form-control mb-3"
+                class="form-control mb-3 {% if answer_form.text.errors %}is-invalid{% endif %}"
                 id="answerText"
-                name="answer"
+                name="text"
                 rows="6"
+                maxlength="5000"
                 placeholder="Enter your text here"
+                {% if not request.user.is_authenticated %}
+                    disabled
+                    title="Log in to write an answer"
+                {% endif %}
                 required
-            ></textarea>
+            >{{ answer_form.text.value|default_if_none:'' }}</textarea>
+
+            {% for error in answer_form.text.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+            {% if not request.user.is_authenticated %}
+                <div class="form-text">
+                    <a href="{% url 'core:login' %}?next={{ request.path|urlencode }}">
+                        Log in
+                    </a>
+                    to write an answer.
+                </div>
+            {% endif %}
         </div>
 
-        <div class="d-grid gap-2">
-            <button class="btn btn-outline-primary" type="submit">
+        <div class="d-grid gap-2"
+            {% if not request.user.is_authenticated %}
+                title="Log in to send an answer"
+            {% endif %}>
+            <button
+                class="btn btn-outline-primary"
+                type="submit"
+                {% if not request.user.is_authenticated %}
+                    disabled
+                    title="Log in to send an answer"
+                {% endif %}
+            >
                 Send
             </button>
         </div>

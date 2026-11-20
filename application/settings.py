@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CSRF_FAILURE_VIEW = "questions.views.csrf_failure"
 if DEBUG:
     INSTALLED_APPS.append("debug_toolbar")
 

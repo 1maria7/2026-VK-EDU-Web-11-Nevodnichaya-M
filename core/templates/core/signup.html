@@ -2,7 +2,6 @@
 
 {% block title %}Register — AskPupkin{% endblock %}
 
-
 {% block heading %}
     <h1>Register</h1>
 {% endblock %}
@@ -10,131 +9,141 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <form class="was-validated col-12"
-                  method="post"
-                  enctype="multipart/form-data">
+            <form class="col-12" method="post">
                 {% csrf_token %}
 
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <div class="mb-3">
-                    <label for="login" class="form-label">Login</label>
+                    <label for="login" class="form-label">
+                        Login
+                    </label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
                         type="text"
                         id="login"
-                        name="Login"
+                        name="username"
+                        value="{{ form.username.value|default_if_none:'' }}"
                         placeholder="Dr.Pepper"
-                        minlength="3"
-                        maxlength="30"
+                        maxlength="150"
+                        autocomplete="username"
                         required
-                    />
+                    >
                     <div class="form-text">
-                        Login must contain 3–30 characters.
+                        Choose a unique username.
                     </div>
-                    <div class="invalid-feedback">
-                        Please enter a login between 3 and 30 characters.
-                    </div>
+                    {% for error in form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">
+                        Email
+                    </label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.email.errors %}is-invalid{% endif %}"
                         type="email"
                         id="email"
-                        name="Email"
+                        name="email"
+                        value="{{ form.email.value|default_if_none:'' }}"
                         placeholder="dr.pepper@example.com"
                         maxlength="254"
+                        autocomplete="email"
                         required
-                    />
+                    >
                     <div class="form-text">
-                        Enter a valid email address (maximum 254 characters).
+                        Enter a valid email address.
                     </div>
-                    <div class="invalid-feedback">
-                        Please enter a valid email address.
-                    </div>
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="mb-3">
-                    <label for="nickName" class="form-label">NickName</label>
+                    <label for="nickName" class="form-label">
+                        NickName
+                    </label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
                         type="text"
                         id="nickName"
-                        name="NickName"
+                        name="first_name"
+                        value="{{ form.first_name.value|default_if_none:'' }}"
                         placeholder="Pepper"
-                        minlength="2"
-                        maxlength="30"
+                        maxlength="150"
                         required
-                    />
+                    >
                     <div class="form-text">
-                        NickName must contain 2–30 characters.
+                        Enter your display name.
                     </div>
-                    <div class="invalid-feedback">
-                        Please enter a nickname between 2 and 30 characters.
-                    </div>
+                    {% for error in form.first_name.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
                         type="password"
                         id="password"
-                        name="Password"
+                        name="password1"
                         placeholder="*******"
-                        minlength="8"
-                        maxlength="64"
+                        autocomplete="new-password"
                         required
-                    />
+                    >
                     <div class="form-text">
-                        Password must contain 8–64 characters.
+                        Choose a secure password.
                     </div>
-                    <div class="invalid-feedback">
-                        Password must contain between 8 and 64 characters.
-                    </div>
+                    {% for error in form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="mb-3">
-                    <label for="reapeatenPassword" class="form-label">
+                    <label for="repeatPassword" class="form-label">
                         Repeat password
                     </label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
                         type="password"
-                        id="reapeatenPassword"
-                        name="Repeat Password"
+                        id="repeatPassword"
+                        name="password2"
                         placeholder="*******"
-                        minlength="8"
-                        maxlength="64"
+                        autocomplete="new-password"
                         required
-                    />
+                    >
                     <div class="form-text">
                         Repeat the password you entered above.
                     </div>
-                    <div class="invalid-feedback">
-                        Please repeat your password.
-                    </div>
+                    {% for error in form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 </div>
 
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">Upload avatar</label>
-                    <input
-                        type="file"
-                        class="form-control"
-                        id="avatar"
-                        name="avatar"
-                        accept="image/png, image/jpeg"
-                        required
-                    />
-                    <div class="form-text">
-                        Allowed formats: JPG and PNG. Maximum file size: 5 MB.
-                    </div>
-                    <div class="invalid-feedback">
-                        Please choose an avatar image.
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-outline-primary w-100">
+                <button
+                    type="submit"
+                    class="btn btn-outline-primary w-100"
+                >
                     Register!
                 </button>
             </form>

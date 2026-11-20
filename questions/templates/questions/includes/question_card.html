@@ -20,14 +20,24 @@
                 </div>
 
                 <div class="vote-widget d-flex flex-column align-items-center gap-1"
-                     data-vote-widget
-                     data-count="{{ question.rating }}">
+                    data-vote-widget
+                    data-count="{{ question.rating }}"
+                    data-vote-url="{% url 'questions:vote_question' question_id=question.id %}"
+                    {% if not request.user.is_authenticated %}
+                        title="Log in to vote"
+                    {% elif question.user_vote %}
+                        title="You have already voted"
+                    {% endif %}>
+
                     <button
                         type="button"
-                        class="btn btn-sm btn-outline-success vote-button"
+                        class="btn btn-sm btn-outline-success vote-button {% if question.user_vote == 1 %}active{% endif %}"
                         data-vote="up"
                         aria-label="Like"
-                        aria-pressed="false"
+                        aria-pressed="{% if question.user_vote == 1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or question.user_vote %}
+                            disabled
+                        {% endif %}
                     >▲</button>
 
                     <span class="vote-count" aria-live="polite">
@@ -36,10 +46,13 @@
 
                     <button
                         type="button"
-                        class="btn btn-sm btn-outline-danger vote-button"
+                        class="btn btn-sm btn-outline-danger vote-button {% if question.user_vote == -1 %}active{% endif %}"
                         data-vote="down"
                         aria-label="Dislike"
-                        aria-pressed="false"
+                        aria-pressed="{% if question.user_vote == -1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or question.user_vote %}
+                            disabled
+                        {% endif %}
                     >▼</button>
                 </div>
             </div>

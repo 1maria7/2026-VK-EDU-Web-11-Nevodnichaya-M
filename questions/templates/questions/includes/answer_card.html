@@ -20,14 +20,24 @@
                 </div>
 
                 <div class="vote-widget d-flex flex-column align-items-center gap-1"
-                     data-vote-widget
-                     data-count="{{ answer.rating }}">
+                    data-vote-widget
+                    data-count="{{ answer.rating }}"
+                    data-vote-url="{% url 'questions:vote_answer' answer_id=answer.id %}"
+                    {% if not request.user.is_authenticated %}
+                        title="Log in to vote"
+                    {% elif answer.user_vote %}
+                        title="You have already voted"
+                    {% endif %}>
+
                     <button
                         type="button"
                         class="btn btn-sm btn-outline-success vote-button"
                         data-vote="up"
                         aria-label="Like"
-                        aria-pressed="false"
+                        aria-pressed="{% if answer.user_vote == 1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or answer.user_vote %}
+                            disabled
+                        {% endif %}
                     >▲</button>
 
                     <span class="vote-count" aria-live="polite">
@@ -39,7 +49,10 @@
                         class="btn btn-sm btn-outline-danger vote-button"
                         data-vote="down"
                         aria-label="Dislike"
-                        aria-pressed="false"
+                        aria-pressed="{% if answer.user_vote == -1 %}true{% else %}false{% endif %}"
+                        {% if not request.user.is_authenticated or answer.user_vote %}
+                            disabled
+                        {% endif %}
                     >▼</button>
                 </div>
             </div>
@@ -50,12 +63,18 @@
                 <p class="text-muted small mb-2">
                     Created: {{ answer.created_at }}
                 </p>
-
-                <div class="form-check">
+            {% if request.user.is_authenticated and request.user.id == question.author_id %}
+                <div
+                    class="form-check"
+                    data-correct-widget
+                    data-question-id="{{ answer.question_id }}"
+                    data-correct-url="{% url 'questions:set_correct_answer' answer_id=answer.id %}"
+                >
                     <input
                         class="form-check-input"
                         type="checkbox"
                         id="correctAnswer{{ answer.id }}"
+                        data-correct-checkbox
                         {% if answer.is_correct %}checked{% endif %}
                     >
                     <label
@@ -64,7 +83,18 @@
                     >
                         <span class="fw-semibold">Correct!</span>
                     </label>
+                    <div
+                        class="small text-danger"
+                        data-correct-error
+                        role="alert"
+                        hidden
+                    ></div>
                 </div>
+            {% elif answer.is_correct %}
+                <div class="fw-semibold text-success">
+                    Correct!
+                </div>
+            {% endif %}
             </div>
         </div>
     </div>
