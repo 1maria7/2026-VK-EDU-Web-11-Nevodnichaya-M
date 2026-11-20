@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+
+{% block title %}New question — AskPupkin{% endblock %}
+
+{% block heading %}
+    <h1>New question</h1>
+{% endblock %}
+
+{% block content %}
+    <form class="border border-2 border-dark p-3 rounded"
+          method="post">
+        {% csrf_token %}
+
+        <div class="alert alert-danger" role="alert">
+            Failed to submit the question. Check the fields and try again.
+        </div>
+
+        <div class="mb-3">
+            <label for="questionTitle" class="form-label">Title</label>
+            <input
+                type="text"
+                class="form-control"
+                id="questionTitle"
+                name="title"
+                placeholder="How to build a moonpark?"
+                minlength="5"
+                maxlength="100"
+                required
+            >
+            <div class="form-text">
+                Enter between 5 and 100 characters.
+            </div>
+            <div class="invalid-feedback">
+                Please enter a title between 5 and 100 characters.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">
+                Text
+            </label>
+            <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                name="text"
+                rows="7"
+                placeholder="Enter your text here"
+                minlength="10"
+                maxlength="5000"
+                required
+            ></textarea>
+            <div class="form-text">
+                Enter between 10 and 5000 characters.
+            </div>
+            <div class="invalid-feedback">
+                Please enter text between 10 and 5000 characters.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="questionTags" class="form-label">Tags</label>
+            <input
+                type="text"
+                class="form-control"
+                id="questionTags"
+                name="tags"
+                placeholder="moon, space"
+                maxlength="100"
+                pattern="[a-zA-Z0-9-]+(,\s*[a-zA-Z0-9-]+)*"
+                required
+            >
+
+            <div class="form-text">
+                Maximum 100 characters. Separate tags with commas,
+                for example: moon, space, park.
+            </div>
+            <div class="invalid-feedback">
+                Enter tags separated by commas. Use English letters,
+                numbers and hyphens.
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" type="submit">
+                Ask
+            </button>
+        </div>
+    </form>
+{% endblock %}

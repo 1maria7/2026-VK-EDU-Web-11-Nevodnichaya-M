@@ -1,0 +1,82 @@
+{% load static %}
+<div class="card mb-4" style="width: 100%;">
+            <div class="card-body">
+                <div class="d-flex gap-3 align-items-start">
+            <div class="flex-shrink-0" style="width: 72px;">
+                <div style="height: 70px;" class="border rounded mb-2 w-100">
+                    {% if question.author.profile.avatar %}
+                        <img
+                            src="{{ question.author.profile.avatar.url }}"
+                            alt="Avatar"
+                            class="img-fluid"
+                        >
+                    {% else %}
+                        <img
+                            src="{% static 'core/img/avatar.png' %}"
+                            alt="Avatar"
+                            class="img-fluid"
+                        >
+                    {% endif %}
+                </div>
+
+                <div class="vote-widget d-flex flex-column align-items-center gap-1"
+                     data-vote-widget
+                     data-count="{{ question.rating }}">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-success vote-button"
+                        data-vote="up"
+                        aria-label="Like"
+                        aria-pressed="false"
+                    >▲</button>
+
+                    <span class="vote-count" aria-live="polite">
+                        {{ question.rating }}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger vote-button"
+                        data-vote="down"
+                        aria-label="Dislike"
+                        aria-pressed="false"
+                    >▼</button>
+                </div>
+            </div>
+
+            <div class="flex-grow-1" style="min-width: 0;">
+                <h2 class="card-title">
+                    <a href="{% url 'questions:question' question_id=question.id %}"
+                       class="link-dark text-decoration-none">
+                        {{ question.title }}
+                    </a>
+                </h2>
+
+                <p class="text-muted small mb-2">
+                    Created: {{ question.created_at }}
+                </p>
+
+                <p class="card-text" style="margin-bottom: 32px;">
+                    {{ question.text }}
+                </p>
+
+                <a href="{% url 'questions:question' question_id=question.id %}#answers"
+                   class="card-link"
+                   style="margin-right: 30px;">
+                    Answers ({{ question.answers_count }})
+                </a>
+
+                <span class="text-decoration-underline">Tags:</span>
+
+                {% for tag in question.tags.all %}
+                    <a
+                        href="{% url 'questions:tag' tag_name=tag.name %}"
+                        class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover"
+                    >
+                        {{ tag.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
